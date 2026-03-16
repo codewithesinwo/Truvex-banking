@@ -1,71 +1,49 @@
 import React from "react";
-import { ShieldCheck, ArrowLeftRight, Smartphone } from "lucide-react";
+import { motion } from "framer-motion";
+import { FEATURES, TRUST_LOGOS } from "../data/constants";
+import { getIcon, fadeInVariant } from "../utils/helpers";
+
+const renderTrustLogos = () => (
+  <div className="flex flex-wrap justify-center gap-8 opacity-40 grayscale">
+    {TRUST_LOGOS.map((logo, idx) => (
+      <span key={idx} className="font-bold text-sm tracking-widest">
+        {logo}
+      </span>
+    ))}
+  </div>
+);
+
+const renderFeatureCard = (feature, index) => (
+  <motion.div
+    key={index}
+    {...fadeInVariant}
+    transition={{ duration: 0.6, delay: index * 0.2 }}
+    className="flex gap-5 bg-white p-6 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 border border-slate-100 hover:-translate-y-1"
+  >
+    <div className={`${feature.bgColor} p-4 h-fit rounded-full flex items-center justify-center shrink-0`}>
+      {getIcon(feature.icon, 24, "text-blue-600")}
+    </div>
+    <div>
+      <h3 className="text-xl font-bold text-slate-800 mb-2">{feature.title}</h3>
+      <p className="text-slate-600 leading-relaxed">{feature.description}</p>
+    </div>
+  </motion.div>
+);
 
 const FeaturesSection = () => {
-  const features = [
-    {
-      title: "Secure & Reliable",
-      description:
-        "Advanced security features to keep your account safe and secure.",
-      icon: <ShieldCheck className="w-8 h-8 text-blue-600" />,
-      bgColor: "bg-blue-50",
-    },
-    {
-      title: "Easy Transfers",
-      description: "Quickly send money to anyone, anywhere, anytime.",
-      icon: <ArrowLeftRight className="w-8 h-8 text-blue-500" />,
-      bgColor: "bg-blue-50",
-    },
-    {
-      title: "24/7 Access",
-      description:
-        "Manage your money from anywhere with our mobile and web apps.",
-      icon: <Smartphone className="w-8 h-8 text-blue-600" />,
-      bgColor: "bg-blue-50",
-    },
-  ];
-
-  const trustLogos = ["TRUSTSCURE", "PAYSAFE", "PCI Standards", "DIGISECURE"];
-
   return (
-    <section className="py-6 px-6 bg-gradient-to-br from-white via-blue-50 to-blue-100 min-h-screen flex flex-col items-center">
+    <section className="py-16 px-6 bg-gradient-to-br from-white via-blue-50 to-blue-100 flex flex-col items-center">
       {/* Trust Header */}
-      <div className="text-center mb-12">
-        <p className="text-slate-600 font-medium mb-6 text-lg">
+      <motion.div className="text-center mb-16" {...fadeInVariant}>
+        <p className="text-slate-600 font-medium mb-8 text-lg">
           Trusted by over 1,000,000 users!
         </p>
-        <div className="flex flex-wrap justify-center gap-8 opacity-40 grayscale">
-          {trustLogos.map((logo, idx) => (
-            <span key={idx} className="font-bold text-sm tracking-widest">
-              {logo}
-            </span>
-          ))}
-        </div>
-      </div>
+        {renderTrustLogos()}
+      </motion.div>
 
       {/* Cards Container */}
-      <div className="max-w-6xl w-full grid grid-cols-1 md:grid-cols-3 gap-6">
-        {features.map((feature, index) => (
-          <div
-            key={index}
-            className="flex gap-5 bg-white p-5 rounded-2xl shadow-sm hover:shadow-md transition-shadow duration-300 border border-slate-100"
-          >
-            <div
-              className={`${feature.bgColor} p-4 h-17 rounded-full flex items-center justify-center`}
-            >
-              {feature.icon}
-            </div>
-            <div>
-              {" "}
-              <h3 className="text-2xl font-bold text-slate-800 mb-3">
-                {feature.title}
-              </h3>
-              <p className="text-slate-500 leading-relaxed text-lg">
-                {feature.description}
-              </p>
-            </div>
-          </div>
-        ))}
+      <div className="max-w-6xl w-full grid grid-cols-1 md:grid-cols-3 gap-8">
+        {FEATURES.map((feature, index) => renderFeatureCard(feature, index))}
       </div>
     </section>
   );
