@@ -1,28 +1,44 @@
-import Header from "./components/Header"
-import Hero from "./components/Hero"
-import FeaturesSection from "./components/FeaturesSection"
-import Services from "./components/Services"
-import Testimonials from "./components/Testimonials"
-import Pricing from "./components/Pricing"
-import CTA from "./components/CTA"
-import About from "./components/About"
-import FAQ from "./components/FAQ"
-import Footer from "./components/Footer"
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
+import AdminRoute from './components/AdminRoute'
+import DashboardLayout from './components/DashboardLayout'
+import ProtectedRoute from './components/ProtectedRoute'
+import AdminDashboard from './pages/AdminDashboard'
+import Dashboard from './pages/Dashboard'
+import Home from './pages/Home'
+import Login from './pages/Login'
+import Register from './pages/Register'
+import Savings from './pages/Savings'
 
 function App() {
   return (
-    <>
-      <Header />
-      <Hero />
-      <FeaturesSection />
-      <Services />
-      <Testimonials />
-      <Pricing />
-      <CTA />
-      <About />
-      <FAQ />
-      <Footer />
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+
+        <Route
+          element={
+            <ProtectedRoute>
+              <DashboardLayout />
+            </ProtectedRoute>
+          }
+        >
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/dashboard/savings" element={<Savings />} />
+          <Route
+            path="/admin"
+            element={
+              <AdminRoute>
+                <AdminDashboard />
+              </AdminRoute>
+            }
+          />
+        </Route>
+
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </BrowserRouter>
   )
 }
 
